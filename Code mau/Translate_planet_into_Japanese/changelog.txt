@@ -1,0 +1,102 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.2.5
+Date: 2025.08.23
+  Update:
+    - 惑星Paracelsin
+    - 惑星Planet Arrakis
+    - 惑星Rubia
+    - 衛星Cerys
+    - 衛星Lignumis
+    - 衛星Muluna
+  Fixes:
+    - その他微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.2.4
+Date: 2025.08.19
+  New:
+    - Flare Stack追加
+  Update:
+    - 惑星Rubia
+    - 惑星Planet Arrakis
+    - 惑星Muluna
+    - 惑星Paracelsin
+    - Moshine-assets
+    - 衛星Cerys
+    - その他関連MOD
+  Fixes:
+    - その他微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.2.3
+Date: 2025.08.09
+  Update:
+    - 惑星Maraxsis
+  Bugfixes:
+    - SpidertronPatrols 不足分を追加
+  Fixes:
+    - 衛星Cerys
+    - その他微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.2.2
+Date: 2025.08.02
+  Update:
+    - visible-planets
+  Fixes:
+    - 惑星Corrundum
+    - 惑星Muluna
+    - その他微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 2025.07.26
+  New:
+    - PlanetsLib対応
+  Update:
+    - elevated-pipes
+    - 惑星Corrundum
+    - 惑星Paracelsin
+    - 惑星Rubia
+    - 衛星Cerys
+---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 2025.07.21
+  New:
+    - 惑星Tenebris対応
+    - 惑星Planet Castra対応
+  Update:
+    - 惑星Rubia
+    - 惑星Muluna
+    - 惑星Maraxsis
+    - 衛星Cerys
+    - 衛星Muluna
+  Fixes:
+    - SolarMatrix一部修正
+    - 惑星Metal and Stars微修正
+    - その他微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 2025.07.15
+  New:
+    - 惑星Nexus対応
+    - 惑星Igrys対応
+  Fixes:
+    - 微修正
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2025.07.13
+  New:
+    - 惑星Corrundum対応
+    - 惑星Planet Maraxsis対応
+    - 惑星Metal and Stars対応
+    - 惑星Moshine対応
+    - 惑星Planet Paracelsin対応
+    - 惑星Planet Arrakis対応
+    - 惑星Planet Rubia対応
+    - 惑星Secretas&Frozeta対応
+    - 惑星Terra Palus対応
+    - 衛星Cerys対応
+    - 衛星Lignumis対応
+    - 衛星Muluna対応
+    - その他関連必須mod対応
+    - Cosmic-Social-Distancing対応
+    - Planetary-Distance-Adjustments対応
+    - Redrawn-Space-Connections対応
+    - visible-planets対応
