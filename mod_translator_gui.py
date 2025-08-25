@@ -4,10 +4,20 @@ import base64
 from cryptography.fernet import Fernet
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
+from pathlib import Path
+import zipfile
+import json
+import shutil
+import requests
+import time
+from threading import Lock
+from datetime import datetime
 
 import os
 import threading
-from mod_translate_pack_core import process_mods_to_language_pack
+from mod_translate_pack_core import process_mods_to_language_pack, find_locale_files
+from mod_translate_core import read_cfg_file, translate_texts as core_translate_texts
+from mod_translate_pack_core import translate_texts as pack_translate_texts
 
 class ModTranslatorApp(tk.Tk):
     def get_machine_key(self):
@@ -72,6 +82,7 @@ class ModTranslatorApp(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_close)  # Gắn sự kiện thoát chương trình
         self.create_widgets()
         self.load_settings()  # Tự động tải lại thiết lập từ file config.ini
+        self.file_lock = Lock()
 
     def create_widgets(self):
         # Frame for file selection
@@ -125,7 +136,7 @@ class ModTranslatorApp(tk.Tk):
         self.status_label = tk.Label(self, text="Ready.", anchor="w")
         self.status_label.pack(fill="x", padx=10, pady=5)
 
-        # Start Translation button
+        # Start Translation button321
         tk.Button(self, text="Start Translation", command=self.start_translation, height=2, bg="#4CAF50", fg="white").pack(fill="x", padx=10, pady=10)
 
     def add_files(self):
@@ -159,45 +170,183 @@ class ModTranslatorApp(tk.Tk):
         if not deepl_api_key:
             messagebox.showerror("DeepL API Key Missing", "Please enter your DeepL API Key.")
             return
-        target_lang = self.lang_var.get().upper()
-        lang_code = target_lang.lower()
-        output_dir = os.path.join(os.getcwd(), "output")
-        os.makedirs(output_dir, exist_ok=True)
-        # Path to mod mẫu (Translate_planet_into_Japanese) do người dùng cung cấp
-        mod_sample_dir = r"C:\\Users\\Acer\\Desktop\\Translate_planet_into_Japanese_1.2.5\\Translate_planet_into_Japanese\\Code mau\\Translate_planet_into_Japanese"
-        glossary_id = None
-        self.progress['value'] = 0
-        self.status_label.config(text="Translating... Please wait.")
-        self.update()
-        def worker():
-            try:
-                total = len(self.selected_files)
-                custom_mod_name = self.mod_name_var.get().strip() or "Auto_Translate_Mod_Langue"
-                def progress_callback(current, total, mod_name):
-                    percent = int((current/total)*100)
-                    self.progress['value'] = percent
-                    self.status_label.config(text=f"Translating: {mod_name} ({current}/{total})")
-                    self.update_idletasks()
-                from mod_translate_pack_core import process_mods_to_language_pack
-                mod_out_dir = process_mods_to_language_pack(
-                    self.selected_files,
-                    mod_sample_dir,
-                    output_dir,
-                    deepl_api_key,
-                    target_lang,
-                    lang_code,
-                    glossary_id,
-                    progress_callback,
-                    custom_mod_name
-                )
-                self.status_label.config(text=f"Done. Output: {mod_out_dir}")
-                self.progress['value'] = 100
-                messagebox.showinfo("Translation Finished", f"Language pack created: {mod_out_dir}")
-            except Exception as e:
-                self.status_label.config(text="Error!")
-                messagebox.showerror("Error", str(e))
-            self.progress['value'] = 0
-        threading.Thread(target=worker, daemon=True).start()
+
+        # Update logic to handle multiple zip files in the output directory
+        output_dir = "output"  # Replace with actual output directory
+        output_zip_files = list(Path(output_dir).glob("*.zip"))
+        existing_mods = set()
+
+        if output_zip_files:
+            # Find the zip file with the highest version
+            def extract_version(zip_name):
+                try:
+                    version_str = zip_name.stem.split("_")[-1]
+                    return tuple(map(int, version_str.split(".")))
+                except Exception:
+                    return (0, 0, 0)  # Default version if parsing fails
+
+            latest_zip = max(output_zip_files, key=lambda z: extract_version(z.name))
+
+            with zipfile.ZipFile(latest_zip, 'r') as zipf:
+                for name in zipf.namelist():
+                    if name.endswith(".cfg"):
+                        mod_name = Path(name).stem
+                        existing_mods.add(mod_name)
+
+        mods_to_translate = self.selected_files
+
+        if not mods_to_translate:
+            messagebox.showinfo("No Mods to Translate", "All selected mods are already translated.")
+            return
+
+        # Call the translation function (process_mods_to_language_pack)
+        threading.Thread(target=self.run_translation, args=(mods_to_translate, deepl_api_key, output_dir)).start()
+
+    def run_translation(self, mods_to_translate, deepl_api_key, output_dir):
+        self.progress["value"] = 0
+        self.status_label.config(text="Translating mods...")
+        translated_mods = []
+        skipped_mods = []
+        no_lang_mods = []
+
+        try:
+            # Process each mod zip file
+            for mod_path in self.selected_files:
+                with zipfile.ZipFile(mod_path, 'r') as zipf:
+                    # Read info.json to get mod name
+                    info_json_path = next((f for f in zipf.namelist() if f.endswith('info.json')), None)
+                    if not info_json_path:
+                        continue
+
+                    with zipf.open(info_json_path) as f:
+                        info = json.load(f)
+                        mod_name = info.get("name", "unknown_mod")
+
+                    # Find locale files in the zip
+                    locale_files = [f for f in zipf.namelist() if f.startswith("locale/en/") and f.endswith(".cfg")]
+
+                    # Translate locale/en/*.cfg files using key->value mapping
+                    from mod_translate_core import parse_cfg_lines
+                    all_values = []
+                    file_entries = []  # list of (locale_file, key_vals, lines)
+                    for locale_file in locale_files:
+                        raw_text = read_cfg_file(zipf, locale_file)
+                        key_vals, lines = parse_cfg_lines(raw_text)
+                        file_entries.append((locale_file, key_vals, lines))
+                        all_values.extend([item['val'] for item in key_vals])
+
+                    translated_values = []
+                    if all_values:
+                        endpoint = self.endpoint_var.get()
+                        translated_values = core_translate_texts(all_values, deepl_api_key, self.lang_var.get(), None, endpoint)
+
+                    # Reconstruct files and merge into single mod cfg
+                    merged_lines = []
+                    tv_iter = iter(translated_values)
+                    for locale_file, key_vals, lines in file_entries:
+                        translated_lines = lines[:]
+                        for item in key_vals:
+                            try:
+                                translated_val = next(tv_iter)
+                            except StopIteration:
+                                translated_val = item['val']
+                            translated_lines[item['index']] = f"{item['key']}={translated_val}\n"
+                        merged_lines.extend(translated_lines)
+
+                    # Save translated file to locale/vi
+                    mod_cfg_path = Path("Code mau/Auto_Translate_Mod_Langue_Vietnamese_1.0.0/locale/vi") / f"{mod_name}.cfg"
+                    mod_cfg_path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(mod_cfg_path, "w", encoding="utf-8") as f:
+                        f.writelines(merged_lines)
+
+                    # Update dependencies in info.json
+                    program_info_path = "Code mau/Auto_Translate_Mod_Langue_Vietnamese_1.0.0/info.json"
+                    with open(program_info_path, "r", encoding="utf-8") as f:
+                        program_info = json.load(f)
+                    dependencies = program_info.get("dependencies", [])
+                    if mod_name not in dependencies:
+                        dependencies.append(f"? {mod_name}")
+                    program_info["dependencies"] = dependencies
+                    with open(program_info_path, "w", encoding="utf-8") as f:
+                        json.dump(program_info, f, ensure_ascii=False, indent=2)
+
+                translated_mods.append(mod_name)
+
+            # Update version in info.json if mods were translated
+            if len(translated_mods) >= 1:
+                program_info_path = "Code mau/Auto_Translate_Mod_Langue_Vietnamese_1.0.0/info.json"
+                with open(program_info_path, "r", encoding="utf-8") as f:
+                    program_info = json.load(f)
+
+                # Increment version
+                old_version = program_info.get("version", "1.0.0")
+                # Normalize and increment semantic version safely
+                parts = old_version.split('.')
+                while len(parts) < 3:
+                    parts.append('0')
+                try:
+                    version_parts = [int(p) for p in parts]
+                except ValueError:
+                    # fallback to timestamp-based version
+                    new_version = datetime.now().strftime('%Y.%m.%d')
+                else:
+                    version_parts[-1] += 1
+                    new_version = '.'.join(map(str, version_parts))
+                program_info["version"] = new_version
+
+                # Determine old and new folder paths BEFORE writing to them
+                old_folder = Path("Code mau/Auto_Translate_Mod_Langue_Vietnamese_1.0.0")
+                new_folder = Path(f"Code mau/Auto_Translate_Mod_Langue_Vietnamese_{new_version}")
+
+                # Ensure old_folder exists
+                if not old_folder.exists():
+                    # create from template if missing or raise
+                    messagebox.showwarning("Warning", f"Template folder {old_folder} not found.")
+                    old_folder.mkdir(parents=True, exist_ok=True)
+
+                # If destination exists, backup
+                if new_folder.exists():
+                    backup_folder = Path(f"{str(new_folder)}.backup_{int(time.time())}")
+                    new_folder.rename(backup_folder)
+
+                # Write updated program info into old folder before rename
+                program_info_path_old = old_folder / 'info.json'
+                with open(program_info_path_old, 'w', encoding='utf-8') as f:
+                    json.dump(program_info, f, ensure_ascii=False, indent=2)
+
+                changelog_path_old = old_folder / 'changelog.txt'
+                with open(changelog_path_old, 'a', encoding='utf-8') as f:
+                    f.write(f"\nVersion {new_version}:\n")
+                    f.write("\n".join([f"- Translated mod: {mod}" for mod in translated_mods]))
+
+                # Now rename
+                old_folder.rename(new_folder)
+
+                # Create zip file from new_folder
+                zip_path = Path(f"Code mau/Auto_Translate_Mod_Langue_Vietnamese_{new_version}.zip")
+                with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                    for foldername, subfolders, filenames in os.walk(new_folder):
+                        for filename in filenames:
+                            file_path = Path(foldername) / filename
+                            arcname = file_path.relative_to(new_folder.parent)
+                            zipf.write(file_path, arcname)
+
+                messagebox.showinfo("Mod Update", f"Mod updated to version {new_version} and zipped at: {zip_path}")
+
+            # Display results
+            result_message = (
+                f"Translation completed.\n\n"
+                f"Translated Mods: {len(translated_mods)}\n"
+                f"Skipped Mods: {len(skipped_mods)}\n"
+                f"Mods without language files: {len(no_lang_mods)}\n\n"
+                f"Translated: {', '.join(translated_mods)}\n"
+                f"Skipped: {', '.join(skipped_mods)}\n"
+                f"No Language Files: {', '.join(no_lang_mods)}"
+            )
+            messagebox.showinfo("Translation Results", result_message)
+            self.status_label.config(text="Translation completed.")
+        except Exception as e:
+            self.status_label.config(text=f"Error: {e}")
 
     def test_deepl_api(self):
         """Kiểm tra tính hợp lệ của mã DeepL API."""
@@ -206,7 +355,6 @@ class ModTranslatorApp(tk.Tk):
             messagebox.showerror("Error", "Please enter your DeepL API Key.")
             return
         try:
-            import requests
             # Sử dụng endpoint từ combobox
             endpoint = f"https://{self.endpoint_var.get()}/v2/usage"
             response = requests.get(endpoint, params={"auth_key": api_key})

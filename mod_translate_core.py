@@ -3,6 +3,7 @@ import zipfile
 import tempfile
 import re
 import requests
+import json
 from pathlib import Path
 
 def find_locale_files(zip_path):
@@ -44,9 +45,11 @@ def write_cfg_file(content_lines, dest_path):
     with open(dest_path, "w", encoding="utf-8") as f:
         f.writelines(content_lines)
 
-def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None):
+def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None, endpoint="api-free.deepl.com"):
+    """Translate a list of strings using DeepL. Endpoint is hostname like 'api-free.deepl.com' or 'api.deepl.com'."""
     if not texts:
         return []
+    url = f"https://{endpoint}/v2/translate"
     data = {
         "auth_key": deepl_api_key,
         "text": texts,
@@ -55,12 +58,9 @@ def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None):
     }
     if glossary_id:
         data["glossary_id"] = glossary_id
-    response = requests.post(
-        "https://api-free.deepl.com/v2/translate",
-        data=data
-    )
+    response = requests.post(url, data=data)
     response.raise_for_status()
-    translated = [line["text"] for line in response.json()["translations"]]
+    translated = [line["text"] for line in response.json().get("translations", [])]
     return translated
 
 def parse_cfg_lines(raw_text):
@@ -116,3 +116,25 @@ def process_mod(zip_path, output_dir, deepl_api_key, target_lang, glossary_id=No
                     rel_path = full_path.relative_to(mod_root.parent)
                     zout.write(full_path, rel_path)
     return True, str(output_zip)
+
+def merge_translations_to_cfg(mod_paths, output_dir, lang_code):
+    for mod_path in mod_paths:
+        with zipfile.ZipFile(mod_path, 'r') as zipf:
+            info_json_path = next((f for f in zipf.namelist() if f.endswith('info.json')), None)
+            if not info_json_path:
+                continue
+
+            with zipf.open(info_json_path) as f:
+                info = json.load(f)
+                mod_name = info.get("name", "unknown_mod")
+
+            locale_files = [f for f in zipf.namelist() if f.startswith("locale/en/") and f.endswith(".cfg")]
+            merged_content = []
+            for locale_file in locale_files:
+                raw_text = read_cfg_file(zipf, locale_file)
+                merged_content.append(raw_text)
+
+            mod_cfg_path = Path(output_dir) / "lang" / lang_code / f"{mod_name}.cfg"
+            mod_cfg_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(mod_cfg_path, "w", encoding="utf-8") as f:
+                f.writelines(merged_content)

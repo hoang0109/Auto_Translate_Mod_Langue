@@ -58,9 +58,10 @@ def write_cfg_file(content_lines, dest_path):
     with open(dest_path, "w", encoding="utf-8") as f:
         f.writelines(content_lines)
 
-def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None):
+def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None, endpoint="api-free.deepl.com"):
     if not texts:
         return []
+    url = f"https://{endpoint}/v2/translate"
     data = {
         "auth_key": deepl_api_key,
         "text": texts,
@@ -69,12 +70,9 @@ def translate_texts(texts, deepl_api_key, target_lang, glossary_id=None):
     }
     if glossary_id:
         data["glossary_id"] = glossary_id
-    response = requests.post(
-        "https://api-free.deepl.com/v2/translate",
-        data=data
-    )
+    response = requests.post(url, data=data)
     response.raise_for_status()
-    translated = [line["text"] for line in response.json()["translations"]]
+    translated = [line["text"] for line in response.json().get("translations", [])]
     return translated
 
 def parse_cfg_lines(raw_text):
@@ -182,4 +180,13 @@ def process_mods_to_language_pack(mod_paths, mod_sample_dir, output_dir, deepl_a
     # Update info.json, changelog.txt
     update_info_json(mod_out_dir / 'info.json', mod_name, lang_code, mod_list)
     update_changelog(mod_out_dir / 'changelog.txt', mod_list)
-    return mod_out_dir
+    # Zip the output directory
+    zip_output_path = Path(output_dir) / f"{mod_name}.zip"
+    with zipfile.ZipFile(zip_output_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for foldername, subfolders, filenames in os.walk(mod_out_dir):
+            for filename in filenames:
+                file_path = Path(foldername) / filename
+                arcname = file_path.relative_to(mod_out_dir.parent)
+                zipf.write(file_path, arcname)
+
+    return zip_output_path
