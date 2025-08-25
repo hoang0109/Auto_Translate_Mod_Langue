@@ -52,4 +52,4 @@ Factorio Mod Translator là một công cụ giúp bạn dịch các mod của t
 - Các thiết lập sẽ được tự động lưu khi bạn thoát chương trình.
 
 ## Liên hệ
-Nếu bạn gặp vấn đề hoặc có câu hỏi, vui lòng liên hệ qua email: `hoang0109@example.com`.
+Nếu bạn gặp vấn đề hoặc có câu hỏi, vui lòng liên hệ qua email: `hoang0109@gmail.com`.
