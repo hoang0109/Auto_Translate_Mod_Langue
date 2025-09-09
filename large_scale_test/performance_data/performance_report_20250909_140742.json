@@ -1,0 +1,91 @@
+{
+  "test_timestamp": "2025-09-09T14:07:42.103942",
+  "total_mods": 10,
+  "successful_mods": 10,
+  "failed_mods": 0,
+  "total_strings": 128,
+  "total_translation_time": 0.0017778873443603516,
+  "average_speed": 49741.85380631168,
+  "mod_details": [
+    {
+      "name": "Babelfish",
+      "size_mb": 0.035,
+      "strings": 11,
+      "time": 0.00022840499877929688,
+      "speed": 48160.06680584551,
+      "files": 2
+    },
+    {
+      "name": "BigBags",
+      "size_mb": 0.073,
+      "strings": 23,
+      "time": 0.0002715587615966797,
+      "speed": 84696.21773485513,
+      "files": 1
+    },
+    {
+      "name": "BeltSpeedMultiplier",
+      "size_mb": 0.021,
+      "strings": 1,
+      "time": 6.532669067382812e-05,
+      "speed": 15307.678832116788,
+      "files": 1
+    },
+    {
+      "name": "ElectricPoleRangeMultiplier",
+      "size_mb": 0.013,
+      "strings": 1,
+      "time": 6.318092346191406e-05,
+      "speed": 15827.562264150944,
+      "files": 1
+    },
+    {
+      "name": "MachineSpeedMultiplier",
+      "size_mb": 0.02,
+      "strings": 8,
+      "time": 0.0001327991485595703,
+      "speed": 60241.35008976661,
+      "files": 1
+    },
+    {
+      "name": "BobsStackSize",
+      "size_mb": 0.027,
+      "strings": 1,
+      "time": 6.079673767089844e-05,
+      "speed": 16448.250980392157,
+      "files": 1
+    },
+    {
+      "name": "GunEquipment",
+      "size_mb": 0.277,
+      "strings": 6,
+      "time": 0.00011444091796875,
+      "speed": 52428.8,
+      "files": 1
+    },
+    {
+      "name": "Mining_Drones",
+      "size_mb": 3.877,
+      "strings": 7,
+      "time": 0.00012612342834472656,
+      "speed": 55501.187145557655,
+      "files": 1
+    },
+    {
+      "name": "MegaBotStart",
+      "size_mb": 0.676,
+      "strings": 4,
+      "time": 9.393692016601562e-05,
+      "speed": 42581.766497461926,
+      "files": 1
+    },
+    {
+      "name": "RateCalculator",
+      "size_mb": 0.092,
+      "strings": 66,
+      "time": 0.0006213188171386719,
+      "speed": 106225.65771297007,
+      "files": 1
+    }
+  ]
+}

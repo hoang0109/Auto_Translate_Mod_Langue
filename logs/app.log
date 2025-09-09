@@ -1,0 +1,31 @@
+2025-09-09 11:56:49,716 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:135 - ==================================================
+2025-09-09 11:56:49,717 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:136 - Application: FactorioModTranslator
+2025-09-09 11:56:49,718 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:137 - Python Version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]
+2025-09-09 11:56:49,861 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:138 - Platform: Windows-11-10.0.26100-SP0
+2025-09-09 11:56:49,861 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:139 - Architecture: ('64bit', 'WindowsPE')
+2025-09-09 11:56:49,861 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:140 - Processor: AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD
+2025-09-09 11:56:49,862 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:141 - Current Time: 2025-09-09T11:56:49.862130
+2025-09-09 11:56:49,862 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:142 - ==================================================
+2025-09-09 11:56:49,862 - FactorioModTranslator.ModVersionManager - [33mWARNING[0m - parse_version:75 - Invalid version format: invalid, defaulting to (1, 0, 0)
+2025-09-09 11:56:49,862 - FactorioModTranslator.ModVersionManager - [33mWARNING[0m - parse_version:75 - Invalid version format: , defaulting to (1, 0, 0)
+2025-09-09 11:58:48,445 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:135 - ==================================================
+2025-09-09 11:58:48,445 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:136 - Application: FactorioModTranslator
+2025-09-09 11:58:48,446 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:137 - Python Version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]
+2025-09-09 11:58:48,552 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:138 - Platform: Windows-11-10.0.26100-SP0
+2025-09-09 11:58:48,552 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:139 - Architecture: ('64bit', 'WindowsPE')
+2025-09-09 11:58:48,552 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:140 - Processor: AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD
+2025-09-09 11:58:48,552 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:141 - Current Time: 2025-09-09T11:58:48.552579
+2025-09-09 11:58:48,552 - FactorioModTranslator.system - [32mINFO[0m - log_system_info:142 - ==================================================
+2025-09-09 11:58:48,676 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0
+2025-09-09 11:58:48,677 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0.1
+2025-09-09 11:58:48,678 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0.1
+2025-09-09 11:58:48,678 - FactorioModTranslator.SampleModManager - [32mINFO[0m - scan_sample_mods:378 - Found 3 sample mods
+2025-09-09 11:58:48,678 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - load_sample_mods:213 - Failed to load sample mods: Invalid column index mod_index
+2025-09-09 11:58:56,410 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'
+2025-09-09 11:58:57,693 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'
+2025-09-09 11:59:04,293 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0
+2025-09-09 11:59:04,294 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0.1
+2025-09-09 11:59:04,295 - FactorioModTranslator.SampleModManager - DEBUG - analyze_sample_mod:418 - Analyzed sample mod: Auto_Translate_Mod_Langue_Vietnamese v1.0.1
+2025-09-09 11:59:04,295 - FactorioModTranslator.SampleModManager - [32mINFO[0m - scan_sample_mods:378 - Found 3 sample mods
+2025-09-09 11:59:04,295 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - load_sample_mods:213 - Failed to load sample mods: Invalid column index mod_index
+2025-09-09 11:59:12,481 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'

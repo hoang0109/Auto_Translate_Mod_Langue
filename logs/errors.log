@@ -1,0 +1,5 @@
+2025-09-09 11:58:48,678 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - load_sample_mods:213 - Failed to load sample mods: Invalid column index mod_index
+2025-09-09 11:58:56,410 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'
+2025-09-09 11:58:57,693 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'
+2025-09-09 11:59:04,295 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - load_sample_mods:213 - Failed to load sample mods: Invalid column index mod_index
+2025-09-09 11:59:12,481 - FactorioModTranslator.SampleModDialog - [31mERROR[0m - on_mod_select:264 - Error selecting mod: invalid literal for int() with base 10: '1.0'

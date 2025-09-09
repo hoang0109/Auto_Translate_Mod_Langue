@@ -1,0 +1,128 @@
+{
+  "total_tests": 20,
+  "mock_success": 20,
+  "google_success": 0,
+  "has_google": false,
+  "results": [
+    {
+      "original": "Speed",
+      "mock": "Tốc độ",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Belt multiplier",
+      "mock": "Băng tải hệ số nhân",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Target language",
+      "mock": "Mục tiêu ngôn ngữ",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Big bag size",
+      "mock": "Lớn túi kích thước",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Mining drone",
+      "mock": "Khai thác máy bay không người lái",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Rate calculator",
+      "mock": "Tỷ lệ máy tính",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Electric pole range",
+      "mock": "Điện cột phạm vi",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Machine speed setting",
+      "mock": "Máy móc tốc độ cài đặt",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "How many translations per request",
+      "mock": "Bao nhiêu translations mỗi yêu cầu",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Translate (Entity)",
+      "mock": "Dịch (thực thể)",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Default GUI location",
+      "mock": "Mặc định gui location",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Show power consumption",
+      "mock": "Show năng lượng tiêu thụ",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Calculate maximum production and consumption rates for the selected machines",
+      "mock": "Calculate maximum sản xuất and tiêu thụ tỷ lệs for the selected máy mócs",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Increase the size of your inventory",
+      "mock": "Increase the kích thước of your kho đồ",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Bonus to item pickup distance: +1",
+      "mock": "Bonus to vật phẩm pickup distance: +1",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Some machines have no fuel",
+      "mock": "Some máy mócs have no fuel",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Previous set (1/2)",
+      "mock": "[VI] Previous set (1/2)",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Next set (__1__/__2__)",
+      "mock": "[VI] Next set (__1__/__2__)",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Open in recipe book",
+      "mock": "Open in công thức book",
+      "google": null,
+      "google_error": null
+    },
+    {
+      "original": "Dismiss tool after selecting",
+      "mock": "[VI] Dismiss tool after selecting",
+      "google": null,
+      "google_error": null
+    }
+  ]
+}
