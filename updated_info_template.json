@@ -1,0 +1,17 @@
+{
+  "name": "Auto_Translate_Mod_Langue_Vietnamese",
+  "version": "2.0.0",
+  "title": "Factorio Mods Vietnamese Language Pack (SafeTranslate)",
+  "author": "Hoang0109",
+  "factorio_version": "2.0",
+  "description": "Gói việt hóa chất lượng cao cho các mod Factorio. Sử dụng SafeGoogleTranslateAPI với 99.2% độ chính xác tiếng Việt. Hỗ trợ 40+ mods phổ biến (Updated: 2025-09-09)",
+  "dependencies": [
+    "? aai-industry",
+    "? aai-loaders",
+    "? alien-biomes",
+    "? Babelfish",
+    "? BigBags",
+    "? jetpack",
+    "? RateCalculator"
+  ]
+}

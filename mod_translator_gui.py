@@ -21,6 +21,7 @@ from mod_translate_pack_core import translate_texts as pack_translate_texts
 from improved_mod_finder import find_locale_files_improved
 from google_translate_core import GoogleTranslateAPI
 from google_translate_safe import SafeGoogleTranslateAPI
+from update_info_json import InfoJsonUpdater
 
 # Import Sample Mod Manager
 try:
@@ -851,10 +852,14 @@ class ModTranslatorApp(tk.Tk):
                 try:
                     new_template_path = self.create_new_template_version(translated_mods)
                     if new_template_path:
+                        # Cập nhật info.json trong file zip mới tạo
+                        self.update_template_info_json(new_template_path, translated_mods)
+                        
                         result_message = (
                             f"Translation completed successfully!\n\n"
                             f"Translated Mods: {len(translated_mods)}\n"
-                            f"Created new template: {os.path.basename(new_template_path)}\n\n"
+                            f"Created new template: {os.path.basename(new_template_path)}\n"
+                            f"Info.json updated automatically\n\n"
                             f"Translated: {', '.join(translated_mods)}"
                         )
                     else:
@@ -933,6 +938,23 @@ class ModTranslatorApp(tk.Tk):
         
         # Ít nhất 30% các entry có từ tiếng Anh và không quá 20% các entry có ký tự không phải tiếng Anh
         return english_ratio >= 0.3 and non_english_ratio <= 0.2
+    
+    def update_template_info_json(self, template_zip_path, translated_mods):
+        """Cập nhật info.json trong template zip với danh sách mods đã dịch"""
+        try:
+            print(f"  🔧 Updating info.json in template...")
+            updater = InfoJsonUpdater()
+            success = updater.update_zip_info_json(template_zip_path, translated_mods)
+            
+            if success:
+                print(f"  ✅ Info.json updated successfully")
+            else:
+                print(f"  ⚠️ Info.json update failed")
+                
+            return success
+        except Exception as e:
+            print(f"  ❌ Error updating info.json: {e}")
+            return False
         
     def test_deepl_api(self):
         """Kiểm tra tính hợp lệ của mã DeepL API với UI feedback."""
